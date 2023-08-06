@@ -1,15 +1,14 @@
+use rand::Rng;
+
 
 // ACTIVATION FUNCTIONS
-
-use core::num;
-
 pub fn Sigmoid(x: f32) -> f32 {
     1.0 / (1.0 + (-x).exp())
 }
 
 pub fn ReLU(x: f32) -> f32 {
     if x > 0.0 {
-        x
+        x.min(1.0)
     } else {
         0.0
     }
@@ -27,8 +26,12 @@ struct Neuron {
 impl Neuron {
 
     fn new(input_weights: usize) -> Self {
-        let weights = vec![0.0; input_weights];
-        let bias = 0.0;
+        let mut rng = rand::thread_rng();
+
+        let bias = rng.gen_range(-1.0..1.0);
+        let weights = (0..input_weights)
+            .map(|_| rng.gen_range(-1.0..1.0))
+            .collect();
 
         Self { weights, bias }
     }
@@ -54,11 +57,9 @@ struct Layer {
 
 impl Layer {
 
-    fn new(num_neurons: usize, prev_layer:usize) -> Self {
-        let mut neurons = Vec::with_capacity(num_neurons);
-        neurons = neurons
-                    .iter()
-                    .map(|_| Neuron::new(prev_layer))
+    fn new(input_neurons:usize, output_neurons: usize) -> Self {
+        let neurons = (0..output_neurons)
+                    .map(|_| Neuron::new(input_neurons))
                     .collect();
         Self { neurons }
     }
@@ -91,7 +92,7 @@ impl NeuralNetwork {
         let layers = topology
             .windows(2)
             .map(|layers| {
-                Layer::new(layers[1].neurons, layers[0].neurons)
+                Layer::new(layers[0].neurons, layers[1].neurons)
             })
             .collect();
         
