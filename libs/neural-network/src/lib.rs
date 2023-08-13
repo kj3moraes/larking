@@ -86,7 +86,7 @@ pub struct NeuralNetwork {
 
 impl NeuralNetwork {
 
-    pub fn new(topology: Vec<Topology>) -> Self {
+    pub fn new(topology: &[Topology]) -> Self {
         assert!(topology.len() >= 2);
 
         let layers = topology
