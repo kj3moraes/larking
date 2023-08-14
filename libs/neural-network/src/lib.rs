@@ -1,55 +1,9 @@
-// use self::activation;
 use rand::Rng;
 
+use crate::neurons::Neuron;
 
-// ACTIVATION FUNCTIONS
-pub fn Sigmoid(x: f32) -> f32 {
-    1.0 / (1.0 + (-x).exp())
-}
-
-pub fn ReLU(x: f32) -> f32 {
-    if x > 0.0 {
-        x.min(1.0)
-    } else {
-        0.0
-    }
-}
-
-// NEURAL NETWORK
-
-// Each neuron in the FFNN is defined by its weights and bias.
-struct Neuron {
-    weights: Vec<f32>,
-    bias: f32,
-}
-
-
-impl Neuron {
-
-    fn new(input_weights: usize) -> Self {
-        let mut rng = rand::thread_rng();
-
-        let bias = rng.gen_range(-1.0..1.0);
-        let weights = (0..input_weights)
-            .map(|_| rng.gen_range(-1.0..1.0))
-            .collect();
-
-        Self { weights, bias }
-    }
-
-    fn propogate(&self, inputs: &[f32]) -> f32 {
-        assert_eq!(inputs.len(), self.weights.len());
-
-        let sum:f32 = inputs
-            .iter()
-            .zip(&self.weights)
-            .map(|(weight, input)| weight * input)
-            .sum();
-
-        ReLU(sum + self.bias)
-    }
-}
-
+pub mod activation;
+mod neurons;
 
 struct Layer {
     neurons: Vec<Neuron>,
