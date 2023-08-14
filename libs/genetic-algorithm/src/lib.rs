@@ -1,24 +1,37 @@
+use self::selection::*;
+
 use rand::RngCore;
 
-pub trait SelectionAlgorithm {
-    fn select<'a, I>(&self,
-                    rng: &mut dyn RngCore,
-                    population: &'a[I]) -> &'a I;
-    where: 
-        I: Individual;
+pub struct GeneticAlgorithm {
+    sa: SelectionAlgorithm,
+    ma: f32,
+    ca: f32,
 }
-
-pub struct GeneticAlgorithm;
 
 impl GeneticAlgorithm {
     pub fn new() -> Self {
-        Self
+        Self {
+            sa: RouletteWheelSelection,
+            ma: 0.1,
+            ca: 0.7
+        }
     }
 
-    pub fn run<I>(&self, population: &[I]) -> Vec<I> {
+    pub fn run<I>(&self, rng: &mut dyn RngCore, population: &[I]) -> Vec<I> {
         println!("Running genetic algorithm");
 
-        // TODO: Implement selection, mutation and crossover over the population here.
+        (0..population.len())
+            .map(|_| {
+
+                // Perform selection to choose parents
+                let parent_a = self.sa.select(rng, population);
+                let parent_b = self.sa.select(rng, population);
+
+                // Perform crossover to create child
+
+                // Perform mutation on child
+            })
+            .collect()
         
     }
 }
