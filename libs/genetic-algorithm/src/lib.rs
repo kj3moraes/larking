@@ -1,14 +1,24 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+use rand::RngCore;
+
+pub trait SelectionAlgorithm {
+    fn select<'a, I>(&self,
+                    rng: &mut dyn RngCore,
+                    population: &'a[I]) -> &'a I;
+    where: 
+        I: Individual;
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub struct GeneticAlgorithm;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+impl GeneticAlgorithm {
+    pub fn new() -> Self {
+        Self
+    }
+
+    pub fn run<I>(&self, population: &[I]) -> Vec<I> {
+        println!("Running genetic algorithm");
+
+        // TODO: Implement selection, mutation and crossover over the population here.
+        
     }
 }
