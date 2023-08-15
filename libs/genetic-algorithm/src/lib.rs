@@ -1,11 +1,17 @@
-use self::selection::*;
+use crate::selection::SelectionAlgorithm;
+use crate::crossover::CrossoverMethod;
+use crate::chromosomes::*;
+
+mod selection;
+mod crossover;
+mod chromosome;
 
 use rand::RngCore;
 
 pub struct GeneticAlgorithm {
     sa: SelectionAlgorithm,
+    ca: CrossoverMethod,
     ma: f32,
-    ca: f32,
 }
 
 impl GeneticAlgorithm {
