@@ -1,14 +1,31 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+
+pub struct Simulation {
+    world: World,
+    age: usize
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub struct World {
+    pub animals: Vec<Animal>,
+    pub food: Vec<Food>,
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub struct Animal {
+    pub position: Position,
+    pub energy: f64,
+    pub direction: f64,
+    pub speed: f64,
+    pub size: f64,
+    pub color: Color,
+}
+
+pub struct Food {
+    pub position: Position,
+    pub energy: f64,
+    pub size: f64,
+    pub color: Color,
+}
+
+pub Position {
+    x: f32,
+    y: f32,
 }
