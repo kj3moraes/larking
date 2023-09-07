@@ -1,5 +1,7 @@
 use crate::*;
 
+pub mod abilities;
+
 #[derive(Clone, Debug)]
 pub struct Chromosome {
     genes: Vec<f32>
