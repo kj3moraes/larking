@@ -1,6 +1,5 @@
-use crate::chromosome::Chromosome;
-
-mod chromosome;
+use crate::chromosomes::Chromosome;
+use rand::RngCore;
 
 pub trait Individual {
     fn chromosome(&self) -> &Chromosome;

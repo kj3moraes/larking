@@ -10,9 +10,7 @@ pub struct KWayTournamentSelection {
 }
 
 pub trait SelectionAlgorithm {
-    fn select<'a, I>(&self,
-                    rng: &mut dyn RngCore,
-                    population: &'a[I]) -> &'a I;
+    fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a[I]) -> &'a I;
     where: 
         I: Individual;
 }
@@ -35,14 +33,15 @@ impl SelectionAlgorithm for KWayTournamentSelection {
                     rng: &mut dyn RngCore,
                     population: &'a[I]) -> &'a I {
         
-    let mut tournament = Vec::with_capacity(self.k);
-    for _ in 0..self.k {
-        tournament.push(population.choose(rng).unwrap());
-    }
+        // let mut tournament = Vec::with_capacity(self.k);
+        // for _ in 0..self.k {
+        //     tournament.push(population.choose(rng).unwrap());
+        // }
 
-    tournament
-        .iter()
-        .max_by(|a, b| a.fitness().partial_cmp(&b.fitness()).unwrap())
-        .unwrap()
+        // tournament
+        //     .iter()
+        //     .max_by(|a, b| a.fitness().partial_cmp(&b.fitness()).unwrap())
+        //     .unwrap()
+        unimplemented!()
     }
 }

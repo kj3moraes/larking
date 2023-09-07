@@ -1,9 +1,9 @@
-use std::iter::{FromIterator, IntoIterator};
+use std::iter::{FromIterator};
 use std::ops::{Index, IndexMut};
 
-use self::chromosome::Chromosome;
+use crate::chromosomes::Chromosome;
 
-impl Index for Chromosome {
+impl Index<usize> for Chromosome {
     type Output = f32;
 
     fn index(&self, index: usize) -> &Self::Output {
@@ -19,7 +19,6 @@ impl FromIterator<f32> for Chromosome {
         }
     }
 }
-
 
 impl IntoIterator for Chromosome {
     type Item = f32;
