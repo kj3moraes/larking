@@ -5,8 +5,8 @@ use rand::{ SeedableRng, RngCore, Rng };
 use rand_chacha::ChaCha8Rng;
 
 pub trait SelectionAlgorithm {
-    fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a[I]) -> &'a I;
-    where: 
+    fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a[I]) -> &'a I
+    where
         I: Individual;
 }
 
@@ -19,17 +19,14 @@ pub struct KWayTournamentSelection {
 }
 
 impl SelectionAlgorithm for RouletteWheelSelection {
-    fn select<'a, I>(&self,
-                    rng: &mut dyn RngCore,
-                    population: &'a[I]) -> &'a I 
-    where:
-        I: Individual
+    fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a [I]) -> &'a I
+    where
+        I: Individual,
     {
-        
         population
             .choose_weighted(rng, |individual| individual.fitness())
             .expect("got an empty population")
-        }
+    }
 }
 
 
@@ -47,6 +44,6 @@ impl SelectionAlgorithm for KWayTournamentSelection {
         //     .iter()
         //     .max_by(|a, b| a.fitness().partial_cmp(&b.fitness()).unwrap())
         //     .unwrap()
-        unimplemented!()
+        todo!()
     }
 }

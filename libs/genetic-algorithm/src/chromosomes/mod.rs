@@ -1,4 +1,5 @@
 use crate::*;
+use std::ops::Index;
 
 #[derive(Clone, Debug)]
 pub struct Chromosome {

@@ -1,6 +1,6 @@
 pub use crate::{
-    selection::*, crossover::*, chromosomes::*, mutation::*; individual::Individual; 
-}
+    selection::*, crossover::*, chromosomes::*, mutation::*, individual::Individual
+};
 
 mod individual;
 mod chromosomes;
