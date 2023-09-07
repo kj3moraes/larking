@@ -1,3 +1,6 @@
+use crate::chromosomes::Chromosome;
+use rand::Rng;
+use rand::RngCore;
 
 pub trait MutationMethod {
     fn mutate(
@@ -22,7 +25,7 @@ impl GaussianMutation {
 
 impl MutationMethod for GaussianMutation {
 
-    pub fn mutate(&self, rng: &mut dyn RngCore, chromosome: &mut Chromosome) {
+    fn mutate(&self, rng: &mut dyn RngCore, chromosome: &mut Chromosome) {
         for gene in chromosome.iter_mut() {
             let sign = if rng.gen_bool(0.5) { 1.0 } else { -1.0 };
             if rng.gen_bool(self.chance as f64) {

@@ -1,13 +1,8 @@
-use crate::*;
 
-use rand::SeedableRng;
+use crate::individual::Individual;
+use rand::prelude::SliceRandom;
+use rand::{ SeedableRng, RngCore, Rng };
 use rand_chacha::ChaCha8Rng;
-
-pub struct RouletteWheelSelection;
-
-pub struct KWayTournamentSelection {
-    k: usize,
-}
 
 pub trait SelectionAlgorithm {
     fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a[I]) -> &'a I;
@@ -15,16 +10,26 @@ pub trait SelectionAlgorithm {
         I: Individual;
 }
 
+#[derive(Clone, Debug, Default)]
+pub struct RouletteWheelSelection;
+
+#[derive(Clone, Debug, Default)]
+pub struct KWayTournamentSelection {
+    k: usize,
+}
 
 impl SelectionAlgorithm for RouletteWheelSelection {
     fn select<'a, I>(&self,
                     rng: &mut dyn RngCore,
-                    population: &'a[I]) -> &'a I {
+                    population: &'a[I]) -> &'a I 
+    where:
+        I: Individual
+    {
         
-    population
-        .choose_weighted(rng, |individual| individual.fitness())
-        .expect("got an empty population")
-    }
+        population
+            .choose_weighted(rng, |individual| individual.fitness())
+            .expect("got an empty population")
+        }
 }
 
 
