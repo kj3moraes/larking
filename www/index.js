@@ -1,3 +1,3 @@
 import * as sim from "lib-sim-wasm";
 
-alert("What has been said? "  + sim.tell_em() + "!!");
+alert("Thus spoke St. Alia-of-the-Knife"  + sim.tell_em() + "!!");
