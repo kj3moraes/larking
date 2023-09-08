@@ -1,3 +1,3 @@
-import * as wasm from "hello-wasm-pack";
+import * as sim from "lib-sim-wasm";
 
-wasm.greet();
+alert("What has been said? "  + sim.tell_em() + "!!");
