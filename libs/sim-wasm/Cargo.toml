@@ -10,7 +10,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
 getrandom = { version = "0.2", features = ["js"] }
-wasm-bindgen = "0.2"
-lib-evo-sim = { path = "../evolution-sim" }
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+lib-evolution = { path = "../evolution-sim" }
 
