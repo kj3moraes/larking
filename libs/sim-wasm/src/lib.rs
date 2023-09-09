@@ -2,6 +2,7 @@ use wasm_bindgen::prelude::*;
 use lib_evolution as sim;
 use rand::prelude::*;
 use serde::{ Serialize, Deserialize };
+use gloo_utils::format::JsValueSerdeExt;
 
 #[wasm_bindgen]
 pub fn tell_em() -> String {
@@ -42,13 +43,19 @@ impl Simulation {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
-        let mut sim = sim::Simulation::initialize(&mut trng);
+        let mut sim = sim::Simulation::initialize(&mut rng);
         Self { rng, sim }
     }
 
     pub fn world(&self) -> JsValue {
-        let world = World::from(self.sim.world)
+        let world = World::from(&self.sim.world);
         JsValue::from_serde(&world).unwrap()
+    }
+
+    pub fn animals_present(&self) -> JsValue {
+        let world = World::from(&self.sim.world);
+        let animals = world.animals.clone();
+        JsValue::from_serde(&animals).unwrap()
     }
 }
 
@@ -74,6 +81,7 @@ impl From<&sim::Animal> for Animal {
         Self {
             x: animal.position.x,
             y: animal.position.y,
+            rotation: animal.rotation.angle()
         }
     }
 }

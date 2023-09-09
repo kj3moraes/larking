@@ -2,8 +2,8 @@ use nalgebra as na;
 use rand::{ Rng, RngCore };
 
 pub struct Simulation {
-    world: World,
-    age: usize
+    pub world: World,
+    pub age: usize
 }
 
 pub struct World {
@@ -11,15 +11,18 @@ pub struct World {
     pub food: Vec<Food>,
 }
 
+#[derive(Clone, Debug)]
 pub struct Animal {
     pub position: na::Point2<f32>,
     pub rotation: na::Rotation2<f32>,
     pub speed: f32,
 }
 
+#[derive(Clone, Debug)]
 pub struct Food {
     pub position: na::Point2<f32>,
 }
+
 
 impl Simulation {
     pub fn initialize(rng: &mut dyn RngCore) -> Self {
