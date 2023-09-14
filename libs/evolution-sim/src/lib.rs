@@ -31,6 +31,13 @@ impl Simulation {
             age: 0
         }
     }
+
+    pub fn step(&mut self) {
+        self.age += 1;
+        for animal in &mut self.world.animals {
+            animal.move();
+        }
+    }
 }
 
 
@@ -53,8 +60,12 @@ impl Animal {
         Self {
             position: na::Point2::new(rng.gen(), rng.gen()),
             rotation: na::Rotation2::new(rng.gen()),
-            speed: 0.002
+            speed: 0.02
         }
+    }
+
+    pub fn move(&mut self) {
+        self.position += self.rotation * na::Vector2::new(0.0, self.speed);
     }
 }
 

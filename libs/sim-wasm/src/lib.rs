@@ -25,16 +25,16 @@ pub struct World {
 #[wasm_bindgen]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Animal {
-    x: f32,
-    y: f32,
-    rotation: f32
+    pub x: f32,
+    pub y: f32,
+    pub rotation: f32
 }
 
 #[wasm_bindgen]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Food {
-    x: f32,
-    y: f32
+    pub x: f32,
+    pub y: f32
 }
 
 
