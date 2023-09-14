@@ -54,8 +54,8 @@ where
                 // Perform mutation on child
                 self.ma.mutate(rng, &mut child_chromosomes);
 
-                // Conver the chromosomes into an individual
-                I::create(child_chromosomes);
+                // Convert the chromosomes into an individual
+                I::create(child_chromosomes)
             })
             .collect()
         
