@@ -1,13 +1,10 @@
-use wasm_bindgen::prelude::*;
-use lib_evolution as sim;
 use rand::prelude::*;
+use wasm_bindgen::JsValue;
+use wasm_bindgen::prelude::*;
 use serde::{ Serialize, Deserialize };
 use gloo_utils::format::JsValueSerdeExt;
 
-#[wasm_bindgen]
-pub fn tell_em() -> String {
-    "\"The Reverend Mother must combine the seductive wiles of a courtesan with the untouchable majesty of a virgin goddess".to_string()
-}
+use lib_evolution as sim;
 
 #[wasm_bindgen]
 pub struct Simulation {
@@ -43,19 +40,29 @@ impl Simulation {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
-        let mut sim = sim::Simulation::initialize(&mut rng);
+        let sim = sim::Simulation::initialize(&mut rng);
         Self { rng, sim }
+    }
+
+    pub fn step(&mut self) {
+        self.sim.step(&mut self.rng);
     }
 
     pub fn world(&self) -> JsValue {
         let world = World::from(&self.sim.world);
         JsValue::from_serde(&world).unwrap()
     }
+}
+
+#[wasm_bindgen]
+impl World {
+
+    pub fn food_present(&self) -> JsValue {
+        JsValue::from_serde(&self.food).unwrap()
+    }
 
     pub fn animals_present(&self) -> JsValue {
-        let world = World::from(&self.sim.world);
-        let animals = world.animals.clone();
-        JsValue::from_serde(&animals).unwrap()
+        JsValue::from_serde(&self.animals).unwrap()
     }
 }
 

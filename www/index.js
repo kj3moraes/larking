@@ -1,12 +1,8 @@
 import * as sim from "lib-sim-wasm";
 
 const simulation = new sim.Simulation();
-const world = simulation.world();
-const animals = simulation.animals_present();
-console.log(world);
-console.log(animals)
 
-// Initialize the arean
+// Initialize the arena
 const viewport = document.getElementById("arena");
 const viewportScale = window.devicePixelRatio || 1;
 const viewWidth = viewport.width * viewportScale;
@@ -21,6 +17,7 @@ ctx.scale(viewportScale, viewportScale);
 ctx.lineWidth = 0.001 * viewWidth;
 ctx.fillStyle = "rgb(0,0,0)";
 
+// Draw all the birds as triangles.
 CanvasRenderingContext2D.prototype.drawTriangle = 
     function (x, y, size, rotation) {
         this.beginPath();
@@ -41,16 +38,47 @@ CanvasRenderingContext2D.prototype.drawTriangle =
             y + Math.cos(rotation) * size * 1.5
         );
 
-        this.stroke();
+        this.fillStyle = 'rgb(255, 128, 128)';
+        this.fill();
     };
 
+CanvasRenderingContext2D.prototype.drawCircle =
+    function(x, y, radius) {
+        this.beginPath();
 
-for (const animal of animals) {
-    ctx.drawTriangle(
-        animal.x * viewWidth,
-        animal.y * viewHeight,
-        0.01 * viewWidth,
-        animal.rotation
-    );
-    console.log(animal);
+        this.arc(x, y, radius, 0, 2.0 * Math.PI);
+        this.fillStyle = 'rgb(0, 255, 0)';
+        this.fill();
+    };
+
+function redraw() {
+
+    ctx.clearRect(0, 0, viewWidth, viewHeight);
+    simulation.step();
+
+    const world = simulation.world();
+    console.log(world);
+
+    // Draw the food
+    for (const food of world.food) {
+        ctx.drawCircle(
+            food.x * viewWidth,
+            food.y * viewHeight,
+            0.003 * viewWidth);
+    }
+
+    // Draw the animals
+    for (const animal of world.animals) {
+
+        ctx.drawTriangle(
+            animal.x * viewWidth,
+            animal.y * viewHeight,
+            0.01 * viewWidth,
+            animal.rotation
+        );
+        console.log(animal);
+    }
+
+    requestAnimationFrame(redraw);
 }
+redraw();

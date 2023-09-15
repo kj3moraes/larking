@@ -11,7 +11,7 @@ crate-type = ["cdylib"]
 [dependencies]
 rand = "0.8"
 serde = { version = "1.0", features = ["derive"] }
-gloo-utils = "0.2.0"
+gloo-utils = { version = "0.2.0", features = ["serde"] }
 getrandom = { version = "0.2", features = ["js"] }
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 lib-evolution = { path = "../evolution-sim" }
