@@ -2,16 +2,16 @@ use std::f32::consts::*;
 use nalgebra as na;
 use crate::food::Food;
 
-const DEFAULT_FOV_RANGE: f32 = 0.1;
-const DEFAULT_FOV_ANGLE: f32 = PI / 4.0 // (45 degrees);
+const DEFAULT_FOV_RANGE: f32 = 0.25;
+const DEFAULT_FOV_ANGLE: f32 = PI / 4.0; // (45 degrees);
 const DEFAILT_CELLS: usize = 9;
 
 
 #[derive(Clone, Debug)]
 pub struct Eye {
-    fov_range: f32,
-    fov_angle: f32,
-    cells: usize
+    pub(crate) fov_range: f32,
+    pub(crate) fov_angle: f32,
+    pub(crate) cells: usize
 }
 
 
@@ -36,7 +36,8 @@ impl Eye {
         let mut cells = vec![0.0; self.cells];
         
         for food in foods {
-            let distance = (food.position - position).norm();
+            let vec = food.position - position;
+            let distance = vec.norm();
             if distance > self.fov_range {
                 continue;
             }
@@ -64,6 +65,9 @@ impl Eye {
 
             cells[cell] += energy;
     
+        }   
+
+        cells
     }
 }
 

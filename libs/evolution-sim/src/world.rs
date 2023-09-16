@@ -16,7 +16,7 @@ impl World {
         let animals = (0..40)
                         .map(|_| Animal::random(rng))
                         .collect();
-        let food = (0..60)
+        let food = (0..40)
                         .map(|_| Food::random(rng))
                         .collect();
         Self { animals, food }
