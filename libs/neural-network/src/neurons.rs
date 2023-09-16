@@ -2,7 +2,7 @@ use crate::*;
 use rand::{ Rng, RngCore };
 use crate::activation::{ReLU, Sigmoid};
 
-// Each neuron in the FFNN is defined by its weights and bias.
+#[derive(Clone, Debug)]
 pub struct Neuron {
     pub(crate) weights: Vec<f32>,
     pub(crate) bias: f32,

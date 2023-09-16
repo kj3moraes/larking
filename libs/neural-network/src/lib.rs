@@ -3,10 +3,11 @@ use crate::{layer::Layer, topology::Topology};
 
 pub mod activation;
 pub mod layer;
-mod neurons;
-mod topology;
+pub mod neurons;
+pub mod topology;
 
 
+#[derive(Clone, Debug)]
 pub struct NeuralNetwork {
     layers: Vec<Layer>,
 }
