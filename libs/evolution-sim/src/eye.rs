@@ -33,7 +33,36 @@ impl Eye {
                             rotation: na::Rotation2<f32>,
                             foods: &[Food],
     ) -> Vec<f32> {
-        todo!()
+        let mut cells = vec![0.0; self.cells];
+        
+        for food in foods {
+            let distance = (food.position - position).norm();
+            if distance > self.fov_range {
+                continue;
+            }
+            
+            // Calculate the angle with respect to the x-axis
+            let angle = na::Rotation2::rotation_between(
+                                &na::Vector2::y(),
+                                &vec).angle();
+            // Subtract the birds own rotation
+            let angle = angle - rotation.angle();
+            let angle = na::wrap(angle, -PI, PI);
+            if angle < -self.fov_angle / 2.0 || angle > self.fov_angle / 2.0 {
+                continue;
+            }
+
+            // Makes angle *relative* to our birdie's field of view - that is:
+            // transforms it from <-FOV_ANGLE/2,+FOV_ANGLE/2> to <0,FOV_ANGLE>.
+            let angle = angle + self.fov_angle / 2.0;
+            let cell = angle / self.fov_angle;
+            let cell = cell * (self.cells as f32);
+            let cell = (cell as usize).min(cells.len() - 1);
+
+            // Energy needed to expend to get the food. 
+            let energy = (self.fov_range - distance) / self.fov_range;
+
+            cells[cell] += energy;
     
     }
 }
