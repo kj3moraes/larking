@@ -1,3 +1,4 @@
+use lib_neural_network as nn;
 use nalgebra as na;
 use rand::{ Rng, RngCore };
 pub use self::{
