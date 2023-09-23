@@ -4,9 +4,9 @@ pub use crate::{
 
 mod individual;
 mod chromosomes;
-mod selection;
-mod crossover;
-mod mutation;
+pub mod selection;
+pub mod crossover;
+pub mod mutation;
 
 use rand::RngCore;
 
