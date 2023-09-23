@@ -16,7 +16,7 @@ pub struct Eye {
 
 
 fn softmax(vec: &[f32]) -> Vec<f32> {
-    let mut sum: f32 = vec.iter().sum();
+    let sum: f32 = vec.iter().sum();
     let mut result = vec![0.0; vec.len()];
     for i in 0..vec.len() {
         result[i] = vec[i] / sum;

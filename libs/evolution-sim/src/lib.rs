@@ -72,7 +72,7 @@ impl Simulation {
     fn evolve(&mut self, rng: &mut dyn RngCore) {
 
         // Step 1: Get the current population
-        let mut curr_population: Vec<_> =
+        let curr_population: Vec<_> =
             self.world.animals
                 .iter()
                 .map(AnimalIndividual::from_animal)

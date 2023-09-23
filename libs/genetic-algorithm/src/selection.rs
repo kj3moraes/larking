@@ -2,7 +2,6 @@
 use crate::individual::Individual;
 use rand::prelude::SliceRandom;
 use rand::{ SeedableRng, RngCore, Rng };
-use rand_chacha::ChaCha8Rng;
 
 pub trait SelectionAlgorithm {
     fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a[I]) -> &'a I
