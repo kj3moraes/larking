@@ -1,6 +1,6 @@
 use crate::*;
 use rand::{ Rng, RngCore };
-use crate::activation::{ReLU, Sigmoid};
+use crate::activation::{relu, sigmoid};
 
 #[derive(Clone, Debug)]
 pub struct Neuron {
@@ -44,6 +44,6 @@ impl Neuron {
             .map(|(weight, input)| weight * input)
             .sum();
 
-        ReLU(sum + self.bias)
+        relu(sum + self.bias)
     }
 }
