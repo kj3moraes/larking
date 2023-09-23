@@ -2,9 +2,9 @@ use std::f32::consts::*;
 use nalgebra as na;
 use crate::food::Food;
 
-const DEFAULT_FOV_RANGE: f32 = 0.25;
-const DEFAULT_FOV_ANGLE: f32 = PI / 4.0; // (45 degrees);
-const DEFAILT_CELLS: usize = 9;
+const DEFAULT_FOV_RANGE: f32 = 0.5;
+const DEFAULT_FOV_ANGLE: f32 = FRAC_PI_4 * 1.5; 
+const DEFAULT_CELLS: usize = 4;
 
 
 #[derive(Clone, Debug)]
@@ -12,6 +12,16 @@ pub struct Eye {
     pub(crate) fov_range: f32,
     pub(crate) fov_angle: f32,
     pub(crate) cells: usize
+}
+
+
+fn softmax(vec: &[f32]) -> Vec<f32> {
+    let mut sum: f32 = vec.iter().sum();
+    let mut result = vec![0.0; vec.len()];
+    for i in 0..vec.len() {
+        result[i] = vec[i] / sum;
+    }
+    result
 }
 
 
@@ -45,7 +55,8 @@ impl Eye {
             // Calculate the angle with respect to the x-axis
             let angle = na::Rotation2::rotation_between(
                                 &na::Vector2::y(),
-                                &vec).angle();
+                                &vec
+                            ).angle();
             // Subtract the birds own rotation
             let angle = angle - rotation.angle();
             let angle = na::wrap(angle, -PI, PI);
@@ -66,14 +77,14 @@ impl Eye {
             cells[cell] += energy;
     
         }   
-
-        cells
+        let norm_cells = softmax(&cells);
+        norm_cells
     }
 }
 
 
 impl Default for Eye {
     fn default() -> Self {
-        Self::new(DEFAULT_FOV_RANGE, DEFAULT_FOV_ANGLE, DEFAILT_CELLS)
+        Self::new(DEFAULT_FOV_RANGE, DEFAULT_FOV_ANGLE, DEFAULT_CELLS)
     }
 }
