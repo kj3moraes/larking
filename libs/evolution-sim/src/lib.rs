@@ -13,6 +13,7 @@ pub mod eye;
 pub mod animal;
 pub mod food;
 pub mod world;
+pub mod brain;
 mod animal_individual;
 
 use std::f32::consts::FRAC_PI_2;
@@ -58,7 +59,7 @@ impl Simulation {
     pub fn step(&mut self, rng: &mut dyn RngCore) {
         self.age += 1;
         self.process_collisions(rng);
-        if self.age % 5 == 0 {
+        if self.age % 10 == 0 {
             self.process_brains();
         }
         self.process_movement();
@@ -71,7 +72,7 @@ impl Simulation {
     fn evolve(&mut self, rng: &mut dyn RngCore) {
 
         // Step 1: Get the current population
-        let curr_population =
+        let mut curr_population: Vec<_> =
             self.world.animals
                 .iter()
                 .map(AnimalIndividual::from_animal)
@@ -83,9 +84,8 @@ impl Simulation {
             &curr_population
         );
 
-        // Step 3: Figure our how to brind them back
-        self.world.animals =
-            evolved_population
+        // Step 3: Figure our how to bring them back
+        self.world.animals = evolved_population
                 .into_iter()
                 .map(|individual| individual.into_animal(rng))
                 .collect();
@@ -107,6 +107,7 @@ impl Simulation {
                 if na::distance(&animal.position, &food.position) < 0.01 {
                     food.position = rng.gen();
                     collisions += 1;
+                    animal.consumed += 1;
                 }
             }
         }
@@ -122,7 +123,7 @@ impl Simulation {
                 &self.world.food
             );
 
-            let response = animal.brain.propogate(vision);
+            let response = animal.brain.nn.propogate(vision);
 
             let speed_accel = response[0].clamp(-SPEED_ACCEL, SPEED_ACCEL);
             let rotation_accel = response[1].clamp(-ROTATION_ACCEL, ROTATION_ACCEL);

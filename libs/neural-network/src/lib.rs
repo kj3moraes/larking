@@ -52,4 +52,14 @@ impl NeuralNetwork {
             .iter()
             .fold(inputs, |inputs, layer| layer.propogate(inputs))
     }
+
+    pub fn get_weights(&self) -> impl Iterator<Item = f32> + '_ {
+        use std::iter::once;
+
+        self.layers
+            .iter()
+            .flat_map(|layer| layer.neurons.iter())
+            .flat_map(|neuron| once(&neuron.bias).chain(&neuron.weights))
+            .copied()
+    }
 }

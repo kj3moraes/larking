@@ -26,10 +26,13 @@ impl Individual for AnimalIndividual {
 impl AnimalIndividual {
 
     pub fn from_animal(animal: &Animal) -> Self {
-        todo!("Implement AnimalIndividual::from_animal");
+        Self {
+            fitness: animal.consumed as f32,
+            chromosome: animal.as_chromosome(),
+        }
     }
 
     pub fn into_animal(self, rng: &mut dyn RngCore) -> Animal {
-        todo!("Implement AnimalIndividual::into_animal");
+        Animal::from_chromosome(self.chromosome, rng)
     }
 }
