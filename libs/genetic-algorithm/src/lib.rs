@@ -94,7 +94,7 @@ mod tests {
         ];
 
         for _ in 0..10 {
-            population = ga.run(&mut rng, &population).0;
+            population = ga.run(&mut rng, &population);
         }
 
         let expected_population = vec![
