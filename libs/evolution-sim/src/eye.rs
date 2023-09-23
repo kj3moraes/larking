@@ -2,8 +2,8 @@ use std::f32::consts::*;
 use nalgebra as na;
 use crate::food::Food;
 
-const DEFAULT_FOV_RANGE: f32 = 0.5;
-const DEFAULT_FOV_ANGLE: f32 = FRAC_PI_4 * 1.5; 
+const DEFAULT_FOV_RANGE: f32 = 0.25;
+const DEFAULT_FOV_ANGLE: f32 = PI + FRAC_PI_4; 
 const DEFAULT_CELLS: usize = 4;
 
 

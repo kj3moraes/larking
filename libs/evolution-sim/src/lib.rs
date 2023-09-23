@@ -1,18 +1,22 @@
 use nalgebra as na;
 use rand::{ Rng, RngCore };
 use lib_neural_network as nn;
+use lib_genetic_algorithm as ga;
 pub use self::{
     animal::*,
     food::*,
     world::*,
+    animal_individual::*,
 };
 
 pub mod eye;
 pub mod animal;
 pub mod food;
 pub mod world;
+mod animal_individual;
 
 use std::f32::consts::FRAC_PI_2;
+use lib_genetic_algorithm::GeneticAlgorithm;
 
 // The minimum speed a bird can have
 const SPEED_MIN: f32 = 0.001;
@@ -25,12 +29,16 @@ const SPEED_MAX: f32 = 0.005;
 const SPEED_ACCEL: f32 = 0.2;
 
 // Rotation acceleration; determines how much the brain can affect bird's
-// rotation during one step.
+// rotation during one step.    
 const ROTATION_ACCEL: f32 = FRAC_PI_2 / 4.0;
+
+// After how many steps should the world evolve
+const GENERATION_LENGTH: usize = 2500;
 
 pub struct Simulation {
     pub world: World,
-    pub age: usize
+    pub age: usize,
+    ga: GeneticAlgorithm<ga::RouletteWheelSelection, ga::UniformCrossover, ga::GaussianMutation>,
 }
 
 
@@ -38,7 +46,12 @@ impl Simulation {
     pub fn initialize(rng: &mut dyn RngCore) -> Self {
         Self {
             world: World::initialize(rng),
-            age: 0
+            age: 0,
+            ga: GeneticAlgorithm::new(
+                ga::RouletteWheelSelection::default(),
+                ga::UniformCrossover::default(),
+                ga::GaussianMutation::new(0.01, 0.3),
+            ),
         }
     }
 
@@ -49,7 +62,38 @@ impl Simulation {
             self.process_brains();
         }
         self.process_movement();
-        // self.generate_food(rng);
+
+        if self.age % GENERATION_LENGTH == 0 {
+            self.evolve(rng)
+        }
+    }
+
+    fn evolve(&mut self, rng: &mut dyn RngCore) {
+
+        // Step 1: Get the current population
+        let curr_population =
+            self.world.animals
+                .iter()
+                .map(AnimalIndividual::from_animal)
+                .collect();
+
+        // Step 2: Evolve the current population
+        let evolved_population = self.ga.run(
+            rng,
+            &curr_population
+        );
+
+        // Step 3: Figure our how to brind them back
+        self.world.animals =
+            evolved_population
+                .into_iter()
+                .map(|individual| individual.into_animal(rng))
+                .collect();
+
+        // Step 4: Scatter the food (for UI sake)
+        for food in &mut self.world.food {
+            food.position = rng.gen();
+        }
     }
 
     fn process_collisions(&mut self, rng: &mut dyn RngCore) -> usize{
